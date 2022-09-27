@@ -3,6 +3,7 @@
 
 using EmpMgmtUsingDB.DataAccess;
 using EmpMgmtUsingDB.ServiceLayer;
+using EmpMgmtUsingDB.ServiceLayer.JsonUtility;
 using Microsoft.Extensions.DependencyInjection;
 
 internal class Program
@@ -19,5 +20,6 @@ internal class Program
     {
         services.AddSingleton<IEmployeeDB, EmployeeDB>();
         services.AddSingleton<IEmployeeService, EmployeeService>();
+        services.AddSingleton<IJsonEmployeeService, JsonEmployeeService>();
     }
 }

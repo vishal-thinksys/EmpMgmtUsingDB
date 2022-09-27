@@ -69,15 +69,15 @@ namespace EmpMgmtUsingDB.ServiceLayer
         {
             for (int i = 0; i < list.Count; i++)
             {
-                Console.WriteLine($"\nID    ={list[i].EmpID}");
-                Console.WriteLine($"Name  ={list[i].FirstName} {list[i].LastName}");
-                Console.WriteLine($"DOB   ={list[i].DOB:D}");
-                Console.WriteLine($"Age   ={list[i].Age} years");
-                Console.WriteLine($"Email ={list[i].Email}");
-                Console.WriteLine($"Mobile={list[i].Mob}");
-                Console.WriteLine($"Salary={list[i].Salary}");
-                Console.WriteLine($"Date of Joinning={list[i].DOJ:D}");
-                Console.WriteLine($"Status={(list[i].IsActive==true ? "Active":"InActive")}\n");
+                Console.WriteLine($"\nID              =   {list[i].EmpID}");
+                Console.WriteLine($"Name            =   {list[i].FirstName} {list[i].LastName}");
+                Console.WriteLine($"DOB             =   {list[i].DOB:D}");
+                Console.WriteLine($"Age             =   {list[i].Age} years");
+                Console.WriteLine($"Email           =   {list[i].Email}");
+                Console.WriteLine($"Mobile          =   {list[i].Mob}");
+                Console.WriteLine($"Salary          =   {list[i].Salary}");
+                Console.WriteLine($"Date of Joinning=   {list[i].DOJ:D}");
+                Console.WriteLine($"Status          =   {(list[i].IsActive==true ? "Active":"InActive")}\n");
             }
 
         }

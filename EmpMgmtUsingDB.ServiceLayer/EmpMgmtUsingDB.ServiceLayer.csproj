@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -9,6 +9,14 @@
   <ItemGroup>
     <ProjectReference Include="..\EmpMgmtUsingDB.DataAccess\EmpMgmtUsingDB.DataAccess.csproj" />
     <ProjectReference Include="..\EmpMgmtUsingDB.Entity\EmpMgmtUsingDB.Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="JsonUtility\JsonFile\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
 </Project>

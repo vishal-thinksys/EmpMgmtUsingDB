@@ -4,8 +4,8 @@ namespace EmpMgmtUsingDB.DataAccess
 {
     public interface IEmployeeDB
     {
-        int AddEmp(EmployeeModel model);
-        void UpdateEmp(int ID);
+        string AddEmp(EmployeeModel model);
+        string UpdateEmp(EmployeeModel model);
         int DeleteEmp(int ID);
         List<EmployeeModel> ViewEmp();
         List<EmployeeModel> ViewEmpByID(int ID);

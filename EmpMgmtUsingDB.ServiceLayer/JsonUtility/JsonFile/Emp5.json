@@ -1,0 +1,14 @@
+[
+  {
+    "EmpID": 5,
+    "FirstName": "Ram",
+    "LastName": "Kumar",
+    "Email": "Ram@gmail.com",
+    "Mob": 5656565656,
+    "DOB": "02-15-1996",
+    "IsActive": true,
+    "Salary": 6566.0,
+    "DOJ": "08-12-2020",
+    "Age": 26
+  }
+]
