@@ -63,7 +63,7 @@ namespace EmpMgmtUsingDB.ServiceLayer.DummyAPIUtilityService
                 var result = responseTask.Result;
                 if (result.IsSuccessStatusCode)
                 {
-                    var readTask = result.Content.ReadAsStringAsync();//ReadAsAsync<IList<UserModel>>();
+                    var readTask = result.Content.ReadAsStringAsync();
                     readTask.Wait();
                     userlist = JsonConvert.DeserializeObject<List<UserModel>>(readTask.Result);
                     userlist=userlist.Select(x =>  { x.company.Bs = null;return x; }).ToList().Select(y => { y.CreatedBy= "Vishal Kumar"; return y; }).ToList();
@@ -76,6 +76,37 @@ namespace EmpMgmtUsingDB.ServiceLayer.DummyAPIUtilityService
                 }
             }
             _dummyAPIDB.HitAPISaveDataInDB(responseModel);
+        }
+        public bool HitPagingAPISaveDataInDB(int pageno,int pagesize)
+        {
+            bool temp = false;
+            APIResponseModel responseModel = new APIResponseModel();
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://api.instantwebtools.net/v1/");
+                responseModel.APIHitStartTime = DateTime.Now;
+                var responseTask = client.GetAsync($"passenger?page={pageno}&size={pagesize}");
+                responseTask.Wait();
+                responseModel.APIHitEndTime = DateTime.Now;
+                responseModel.TotalTimeTakenByAPIHit = responseModel.APIHitEndTime.Subtract(responseModel.APIHitStartTime);
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    var readTask = result.Content.ReadAsStringAsync();
+                    readTask.Wait();
+                    responseModel.ResponseData = readTask.Result;
+                    if (pagesize == JObject.Parse(responseModel.ResponseData)["data"].Count())
+                    {
+                        temp = true;
+                    }
+                }
+                else
+                {
+                    responseModel.ResponseData = "Problem in API Hitting.Error message occured!";
+                }
+            }
+            _dummyAPIDB.HitAPISaveDataInDB(responseModel);
+            return temp;
         }
     }
 }

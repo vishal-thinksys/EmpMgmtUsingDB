@@ -12,14 +12,61 @@ namespace EmpMgmtUsingDB.ServiceLayer.DummyAPIUtilityService
     {
         private readonly IDummyAPIService _dummyAPIService;
 
-        public  DummyAPIConsole(IDummyAPIService dummyAPIService)
+        public DummyAPIConsole(IDummyAPIService dummyAPIService)
         {
             _dummyAPIService = dummyAPIService;
         }
         public void DummyAPIClassCall()
         {
-           //PrintDetail(_dummyAPIService.HitAPIViewDataInConSole());
-           _dummyAPIService.HitAPISaveDataInDB();   
+            do
+            {
+                Console.WriteLine("Press 1 for Hit API View Data In ConSole");
+                Console.WriteLine("Press 2 for Hit API Save Data In DB");
+                Console.WriteLine("Press 3 for Hit Paging API Save Data In DB");
+                Console.Write("Please enter the number:\t");
+                int text = Convert.ToInt32(Console.ReadLine());
+                if (text == 1)
+                {
+                    PrintDetail(_dummyAPIService.HitAPIViewDataInConSole());
+                }
+                else if (text == 2)
+                {
+                    _dummyAPIService.HitAPISaveDataInDB();
+                }
+                else if (text == 3)
+                {
+                    int pageno = 0, pagesize = 10;
+
+                    bool temp = _dummyAPIService.HitPagingAPISaveDataInDB(pageno, pagesize);
+                    if (temp)
+                    {
+                        while (true)
+                        {
+                            if (temp == true)
+                            {
+                                Console.WriteLine("Press n for Next");
+                            }
+                            if (pageno > 0)
+                            {
+                                Console.WriteLine("Press p for Previous");
+                            }
+                            Console.Write("Please enter the key:\t");
+                            string input = Console.ReadLine();
+                            if (input == "n" && temp == true)
+                            {
+                                temp = _dummyAPIService.HitPagingAPISaveDataInDB(++pageno, pagesize);
+                            }
+                            else if (input == "p" && pageno > 0)
+                            {
+                                temp = _dummyAPIService.HitPagingAPISaveDataInDB(--pageno, pagesize);
+                            }
+                        }
+                    }
+                }
+            } while (true);
+
+
+
         }
         public static void PrintDetail(List<UserModel> list)
         {
@@ -39,7 +86,7 @@ namespace EmpMgmtUsingDB.ServiceLayer.DummyAPIUtilityService
                 Console.WriteLine($"Website             =   {list[i].Website}");
                 Console.WriteLine($"CompanyName         =   {list[i].company.Name}");
                 Console.WriteLine($"CompanyCatchPhrase  =   {list[i].company.CatchPhrase}\n");
-               // Console.WriteLine($"CompanyBs           =   {list[i].company.Bs}");
+                Console.WriteLine($"CompanyBs           =   {list[i].company.Bs}");
             }
 
         }

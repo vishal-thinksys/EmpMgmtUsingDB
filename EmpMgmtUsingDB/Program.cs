@@ -14,20 +14,24 @@ internal class Program
     {
         var services = new ServiceCollection();
         ConfigureServices(services);
-        Console.WriteLine("Press 1 for Employee Management");
-        Console.WriteLine("Press 2 for Hit Dummy API in C#");
-        Console.Write("Please enter the number:\t");
-
-        if(Console.ReadLine()=="1")
+        do
         {
-            services.AddSingleton<ConsoleService, ConsoleService>()
-                .BuildServiceProvider().GetService<ConsoleService>().EntryPointInProject();
-        }
-        else
-        {
-            services.AddSingleton<DummyAPIConsole, DummyAPIConsole>()
-           .BuildServiceProvider().GetService<DummyAPIConsole>().DummyAPIClassCall();
-        }
+            Console.WriteLine("Press 1 for Employee Management");
+            Console.WriteLine("Press 2 for Hit Dummy API in C#");
+            Console.Write("Please enter the number:\t");
+            int text = Convert.ToInt32(Console.ReadLine());
+            if (text == 1)
+            {
+                services.AddSingleton<ConsoleService, ConsoleService>()
+                    .BuildServiceProvider().GetService<ConsoleService>().EntryPointInProject();
+            }
+            else if (text == 2)
+            {
+                services.AddSingleton<DummyAPIConsole, DummyAPIConsole>()
+               .BuildServiceProvider().GetService<DummyAPIConsole>().DummyAPIClassCall();
+            }
+        } while (true);
+       
        
     }
 

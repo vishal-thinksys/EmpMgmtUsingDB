@@ -11,5 +11,6 @@ namespace EmpMgmtUsingDB.ServiceLayer.DummyAPIUtilityService
     {
         List<UserModel> HitAPIViewDataInConSole();
         void HitAPISaveDataInDB();
+        bool HitPagingAPISaveDataInDB(int pageno, int pagesize);
     }
 }
