@@ -1,0 +1,50 @@
+[
+  {
+    "EmpID": 1,
+    "FirstName": "Vishal",
+    "LastName": "Kumar",
+    "Email": "kumar.vishal@thinksys.com",
+    "Mob": 8294628952,
+    "DOB": "03-15-2001",
+    "IsActive": true,
+    "Salary": 2000.0,
+    "DOJ": "09-23-2022",
+    "Age": 21
+  },
+  {
+    "EmpID": 3,
+    "FirstName": "Manash",
+    "LastName": "Kumar",
+    "Email": "asd@jwgd.com",
+    "Mob": 8294628953,
+    "DOB": "05-15-1994",
+    "IsActive": true,
+    "Salary": 87424.0,
+    "DOJ": "05-15-2003",
+    "Age": 28
+  },
+  {
+    "EmpID": 4,
+    "FirstName": "Golden",
+    "LastName": "Singh",
+    "Email": "kumar.visha@thinksys.com",
+    "Mob": 2323322323,
+    "DOB": "09-20-1998",
+    "IsActive": false,
+    "Salary": 250000.0,
+    "DOJ": "05-23-2021",
+    "Age": 24
+  },
+  {
+    "EmpID": 5,
+    "FirstName": "Ram",
+    "LastName": "Kumar",
+    "Email": "Ram@gmail.com",
+    "Mob": 5656565656,
+    "DOB": "02-15-1996",
+    "IsActive": true,
+    "Salary": 6566.0,
+    "DOJ": "08-12-2020",
+    "Age": 26
+  }
+]
