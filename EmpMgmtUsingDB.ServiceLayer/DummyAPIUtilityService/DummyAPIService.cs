@@ -2,13 +2,6 @@
 using EmpMgmtUsingDB.Model.DummyAPIUtilityModel;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EmpMgmtUsingDB.ServiceLayer.DummyAPIUtilityService
 {
@@ -20,53 +13,52 @@ namespace EmpMgmtUsingDB.ServiceLayer.DummyAPIUtilityService
         {
             _dummyAPIDB = dummyAPIDB;
         }
-        public List<UserModel> HitAPIViewDataInConSole()
+        public async Task<List<UserModel>> HitAPIViewDataInConSole()
         {
             List<UserModel> userlist;
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri("https://jsonplaceholder.typicode.com/");
-                //HTTP GET
 
-                var responseTask = client.GetAsync("users");
-                responseTask.Wait();
+                var responseTask =await client.GetAsync("users");               
 
-                var result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = result.Content.ReadAsStringAsync();//ReadAsAsync<IList<UserModel>>();
-                    readTask.Wait();
-
-                    userlist = JsonConvert.DeserializeObject<List<UserModel>>(readTask.Result);
+              
+                if (responseTask.IsSuccessStatusCode)
+                {                   
+                    userlist = JsonConvert.DeserializeObject<List<UserModel>>(await responseTask.Content.ReadAsStringAsync());
                 }
-                else //web api sent error response 
+                else 
                 {
-                    //log response status here..
-
                     userlist = new List<UserModel>();                    
                 }
             }
             return userlist;
         }
-        public void HitAPISaveDataInDB()
+        public async void HitAPISaveDataInDB()
         {
             APIResponseModel responseModel = new APIResponseModel();
             List<UserModel> userlist;
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("https://jsonplaceholder.typicode.com/");               
+                client.BaseAddress = new Uri("https://jsonplaceholder.typicode.com/");
+                
                 responseModel.APIHitStartTime = DateTime.Now;
-                var responseTask = client.GetAsync("users");
-                responseTask.Wait();
+
+                var responseTask = await client.GetAsync("users");
+
                 responseModel.APIHitEndTime = DateTime.Now;
+
                 responseModel.TotalTimeTakenByAPIHit = responseModel.APIHitEndTime.Subtract(responseModel.APIHitStartTime);
-                var result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
+
+                if (responseTask.IsSuccessStatusCode)
                 {
-                    var readTask = result.Content.ReadAsStringAsync();
-                    readTask.Wait();
-                    userlist = JsonConvert.DeserializeObject<List<UserModel>>(readTask.Result);
-                    userlist=userlist.Select(x =>  { x.company.Bs = null;return x; }).ToList().Select(y => { y.CreatedBy= "Vishal Kumar"; return y; }).ToList();
+                    var readTask = await responseTask.Content.ReadAsStringAsync();
+
+                    userlist = JsonConvert.DeserializeObject<List<UserModel>>(readTask);
+
+                    userlist = userlist.Select(x => { x.company.Bs = null; return x; }).ToList();
+                    userlist = userlist.Select(y => { y.CreatedBy = "Vishal Kumar"; return y; }).ToList();
+
                     responseModel.ResponseData = JsonConvert.SerializeObject(userlist, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
                     
                 }
@@ -77,36 +69,39 @@ namespace EmpMgmtUsingDB.ServiceLayer.DummyAPIUtilityService
             }
             _dummyAPIDB.HitAPISaveDataInDB(responseModel);
         }
-        public bool HitPagingAPISaveDataInDB(int pageno,int pagesize)
+        public async void HitPagingAPISaveDataInDB(int pageno,int pagesize)
         {
-            bool temp = false;
-            APIResponseModel responseModel = new APIResponseModel();
-            using (var client = new HttpClient())
+            bool temp = true;
+            while (temp)
             {
-                client.BaseAddress = new Uri("https://api.instantwebtools.net/v1/");
-                responseModel.APIHitStartTime = DateTime.Now;
-                var responseTask = client.GetAsync($"passenger?page={pageno}&size={pagesize}");
-                responseTask.Wait();
-                responseModel.APIHitEndTime = DateTime.Now;
-                responseModel.TotalTimeTakenByAPIHit = responseModel.APIHitEndTime.Subtract(responseModel.APIHitStartTime);
-                var result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
+                APIResponseModel responseModel = new APIResponseModel();
+                using (var client = new HttpClient())
                 {
-                    var readTask = result.Content.ReadAsStringAsync();
-                    readTask.Wait();
-                    responseModel.ResponseData = readTask.Result;
-                    if (pagesize == JObject.Parse(responseModel.ResponseData)["data"].Count())
+                    client.BaseAddress = new Uri("https://api.instantwebtools.net/v1/");
+                    responseModel.APIHitStartTime = DateTime.Now;
+                    var responseTask = await client.GetAsync($"passenger?page={pageno}&size={pagesize}");
+                    responseModel.APIHitEndTime = DateTime.Now;
+                    responseModel.TotalTimeTakenByAPIHit = responseModel.APIHitEndTime.Subtract(responseModel.APIHitStartTime);
+                    if (responseTask.IsSuccessStatusCode)
                     {
-                        temp = true;
+                        responseModel.ResponseData = await responseTask.Content.ReadAsStringAsync();
+
+                        if (pagesize == JObject.Parse(responseModel.ResponseData)["data"].Count())
+                        {
+                            pageno++;
+                        }
+                        else
+                        {
+                            temp = false;
+                        }
                     }
-                }
-                else
-                {
-                    responseModel.ResponseData = "Problem in API Hitting.Error message occured!";
+                    else
+                    {
+                        responseModel.ResponseData = "Problem in API Hitting.Error message occured!";
+                    }
+                    _dummyAPIDB.HitAPISaveDataInDB(responseModel);
                 }
             }
-            _dummyAPIDB.HitAPISaveDataInDB(responseModel);
-            return temp;
         }
     }
 }

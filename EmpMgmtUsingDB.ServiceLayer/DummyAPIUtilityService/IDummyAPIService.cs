@@ -9,8 +9,8 @@ namespace EmpMgmtUsingDB.ServiceLayer.DummyAPIUtilityService
 {
     public interface IDummyAPIService
     {
-        List<UserModel> HitAPIViewDataInConSole();
+        Task<List<UserModel>> HitAPIViewDataInConSole();
         void HitAPISaveDataInDB();
-        bool HitPagingAPISaveDataInDB(int pageno, int pagesize);
+        void HitPagingAPISaveDataInDB(int pageno, int pagesize);
     }
 }

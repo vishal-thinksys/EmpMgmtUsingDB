@@ -27,7 +27,8 @@ namespace EmpMgmtUsingDB.ServiceLayer.DummyAPIUtilityService
                 int text = Convert.ToInt32(Console.ReadLine());
                 if (text == 1)
                 {
-                    PrintDetail(_dummyAPIService.HitAPIViewDataInConSole());
+                    List<UserModel> list = _dummyAPIService.HitAPIViewDataInConSole().Result;
+                    PrintDetail(list);
                 }
                 else if (text == 2)
                 {
@@ -37,31 +38,7 @@ namespace EmpMgmtUsingDB.ServiceLayer.DummyAPIUtilityService
                 {
                     int pageno = 0, pagesize = 10;
 
-                    bool temp = _dummyAPIService.HitPagingAPISaveDataInDB(pageno, pagesize);
-                    if (temp)
-                    {
-                        while (true)
-                        {
-                            if (temp == true)
-                            {
-                                Console.WriteLine("Press n for Next");
-                            }
-                            if (pageno > 0)
-                            {
-                                Console.WriteLine("Press p for Previous");
-                            }
-                            Console.Write("Please enter the key:\t");
-                            string input = Console.ReadLine();
-                            if (input == "n" && temp == true)
-                            {
-                                temp = _dummyAPIService.HitPagingAPISaveDataInDB(++pageno, pagesize);
-                            }
-                            else if (input == "p" && pageno > 0)
-                            {
-                                temp = _dummyAPIService.HitPagingAPISaveDataInDB(--pageno, pagesize);
-                            }
-                        }
-                    }
+                    _dummyAPIService.HitPagingAPISaveDataInDB(pageno, pagesize);                   
                 }
             } while (true);
 
